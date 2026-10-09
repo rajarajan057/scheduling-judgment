@@ -1,0 +1,1206 @@
+[
+ {
+  "id": "A01",
+  "group": "Vela's own examples",
+  "title": "A CEO asks the recruiter for a 7 AM call",
+  "facts": {
+   "requester": {
+    "rank": "ceo"
+   },
+   "local_hour": 7
+  },
+  "expect": {
+   "move": "accept"
+  },
+  "why": "Rank decides who flexes. This is the first half of the example in Vela's own job post.",
+  "source": {
+   "url": "https://www.ycombinator.com/companies/vela/jobs/sv62rsO-ai-operations-associate",
+   "tag": "SELF",
+   "quote": "John will take a 7 AM call with a CEO, but not with a peer"
+  },
+  "from": "Mr. Rao, CEO · email",
+  "msg": "Can we speak at 7 tomorrow morning? I travel after that.",
+  "ctx": "You schedule for a recruiter. 7 AM is before her working day."
+ },
+ {
+  "id": "A02",
+  "group": "Vela's own examples",
+  "title": "A colleague asks the same recruiter for a 7 AM call",
+  "facts": {
+   "requester": {
+    "rank": "peer"
+   },
+   "local_hour": 7
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "9:00 AM"
+   ]
+  },
+  "why": "The other half of the same rule: a peer gets working hours. The 9 to 6 working day is an assumption of this page.",
+  "source": {
+   "url": "https://www.ycombinator.com/companies/vela/jobs/qoFg7EJ-founding-engineer-vela-solving-scheduling-india",
+   "tag": "SELF",
+   "quote": "John the recruiter will gladly take a call with CEO Jill"
+  },
+  "from": "Arun, a colleague · chat",
+  "msg": "Free for a quick call at 7 tomorrow?",
+  "ctx": "You schedule for a recruiter. 7 AM is before her working day."
+ },
+ {
+  "id": "A03",
+  "group": "Vela's own examples",
+  "title": "A client and a coffee chat both want the same slot",
+  "facts": {
+   "contenders": [
+    {
+     "role": "coffee_chat",
+     "name": "Dev"
+    },
+    {
+     "role": "client",
+     "name": "the client"
+    }
+   ]
+  },
+  "expect": {
+   "move": "accept",
+   "includes": [
+    "the client",
+    "Dev"
+   ]
+  },
+  "why": "The client keeps the slot; the coffee chat is offered another time.",
+  "source": {
+   "url": "https://www.ycombinator.com/companies/vela",
+   "tag": "SELF",
+   "quote": "It knows to prioritize a client over a coffee chat"
+  },
+  "from": "Calendar · two requests",
+  "msg": "Thursday 3 PM: a client review, or a coffee chat with Dev.",
+  "ctx": "Only one slot is free."
+ },
+ {
+  "id": "A05",
+  "group": "Vela's own examples",
+  "title": "An invitee has not answered a proposal for four business days",
+  "facts": {
+   "invitee_silent": true,
+   "followups_sent": 0,
+   "business_days_since": 4
+  },
+  "expect": {
+   "move": "follow_up"
+  },
+  "why": "Silent invitees get chased. The three-day gap is an assumption of this page.",
+  "source": {
+   "url": "https://www.ycombinator.com/companies/vela",
+   "tag": "SELF",
+   "quote": "chases the people who don't reply"
+  },
+  "from": "System · no reply from Karan",
+  "msg": "Three times proposed, four business days ago. Nothing back.",
+  "ctx": "No follow-up has been sent yet."
+ },
+ {
+  "id": "A06",
+  "group": "Vela's own examples",
+  "title": "One call is moved and it clashes with two other pending proposals",
+  "facts": {
+   "pending_conflicts": [
+    {
+     "with": "Interview B",
+     "shared": "Priya"
+    },
+    {
+     "with": "Interview C",
+     "shared": "Priya"
+    }
+   ]
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "Interview B",
+    "Interview C"
+   ]
+  },
+  "why": "A change on one thread can invalidate others. Re-propose to everyone affected.",
+  "source": {
+   "url": "https://news.ycombinator.com/item?id=47264741",
+   "tag": "SELF"
+  },
+  "from": "Priya · email",
+  "msg": "I had to move my 2 PM interview.",
+  "ctx": "It now clashes with Interview B and Interview C. Both are still pending."
+ },
+ {
+  "id": "A07",
+  "group": "Vela's own examples",
+  "title": "The invitee answers by SMS a thread that began on email",
+  "facts": {
+   "reply_channel": "sms",
+   "thread_channel": "email",
+   "sender_verified": true
+  },
+  "expect": {
+   "move": "accept",
+   "includes": [
+    "same conversation"
+   ]
+  },
+  "why": "The channel changes, the conversation does not.",
+  "source": {
+   "url": "https://hacker-news.firebaseio.com/v0/item/47264741.json",
+   "tag": "SELF"
+  },
+  "from": "Neha · SMS",
+  "msg": "Thursday 11 works.",
+  "ctx": "The thread began on email. Her number is on file."
+ },
+ {
+  "id": "A08",
+  "group": "Vela's own examples",
+  "title": "The SMS reply comes from a shared phone under a nickname that matches nobody",
+  "facts": {
+   "reply_channel": "sms",
+   "thread_channel": "email",
+   "sender_verified": false
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "confirm who"
+   ]
+  },
+  "why": "A shared device means the writer may not be the person we contacted. Confirm first.",
+  "source": {
+   "url": "https://hacker-news.firebaseio.com/v0/item/47264741.json",
+   "tag": "SELF"
+  },
+  "from": "\"Mom's phone\" · SMS",
+  "msg": "ya thursday ok",
+  "ctx": "Sent from a shared phone. The name matches nobody on the thread."
+ },
+ {
+  "id": "A09",
+  "group": "Vela's own examples",
+  "title": "A C-suite executive needs a time proposal",
+  "facts": {
+   "must_offer_times": true,
+   "audience": {
+    "rank": "c_suite",
+    "name": "Ms. Rao"
+   },
+   "free_slots": [
+    "2026-10-13T04:30:00Z",
+    "2026-10-13T08:30:00Z",
+    "2026-10-14T05:30:00Z",
+    "2026-10-14T09:30:00Z"
+   ],
+   "tz": "Asia/Kolkata"
+  },
+  "expect": {
+   "move": "counter",
+   "tone": "formal",
+   "options": 3
+  },
+  "why": "One formal message with three options, not a back-and-forth.",
+  "source": {
+   "url": "https://hacker-news.firebaseio.com/v0/item/47264741.json",
+   "tag": "SELF"
+  },
+  "from": "Ms. Rao, C-suite · email",
+  "msg": "Please find us a time next week.",
+  "ctx": "Four slots are free. How do you reply?"
+ },
+ {
+  "id": "A10",
+  "group": "Vela's own examples",
+  "title": "A candidate on a shared phone answers one proposed time with shorthand",
+  "facts": {
+   "reply_text": "y tm wrks",
+   "proposed_single": {
+    "at": "2026-10-14T05:30:00Z",
+    "tz": "Asia/Kolkata"
+   },
+   "reply_channel": "sms",
+   "thread_channel": "sms",
+   "sender_verified": true
+  },
+  "expect": {
+   "move": "accept",
+   "includes": [
+    "reading it back",
+    "11:00 AM"
+   ]
+  },
+  "why": "Sending this person a formal three-option email would be the wrong style. Read the time back in plain words. Reading the shorthand as yes is an inference.",
+  "source": {
+   "url": "https://hacker-news.firebaseio.com/v0/item/47264741.json",
+   "tag": "SELF"
+  },
+  "from": "Rahul · SMS",
+  "msg": "y tm wrks",
+  "ctx": "You proposed one time, Wed 11:00 AM. A shared phone, but he is verified."
+ },
+ {
+  "id": "A11",
+  "group": "Vela's own examples",
+  "title": "Someone writes \"next Friday\" for an important meeting",
+  "facts": {
+   "phrase": "next Friday",
+   "stakes": "high"
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "which date"
+   ]
+  },
+  "why": "Whether to ask or infer depends on the cost of being wrong. Here it is high.",
+  "source": {
+   "url": "https://hacker-news.firebaseio.com/v0/item/47264741.json",
+   "tag": "SELF"
+  },
+  "from": "Ms. Iyer, client · email",
+  "msg": "Let's meet next Friday.",
+  "ctx": "It is Monday, and this is an important client meeting."
+ },
+ {
+  "id": "A12",
+  "group": "Vela's own examples",
+  "title": "An investor conversation is requested for a partner",
+  "facts": {
+   "topic": "investor_lp_conversation"
+  },
+  "expect": {
+   "move": "escalate"
+  },
+  "why": "One customer says these are booked personally.",
+  "source": {
+   "url": "https://tryvela.ai/case-studies/firstlook-partners",
+   "tag": "SELF"
+  },
+  "from": "Sam, Brightpoint Capital · email",
+  "msg": "Could we get 30 minutes with Anita this week?",
+  "ctx": "Anita is a partner. Investor calls are booked by her personally."
+ },
+ {
+  "id": "A13",
+  "group": "Vela's own examples",
+  "title": "The calendar is free at 2:30 PM, but the principal's flight lands at 2:00 PM",
+  "facts": {
+   "principal": {
+    "landing_at": "2026-10-14T08:30:00Z"
+   },
+   "request_at": "2026-10-14T09:00:00Z",
+   "tz": "Asia/Kolkata"
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "3:30 PM"
+   ]
+  },
+  "why": "Landing is not arrival at the desk. The 90 minute buffer is an assumption of this page.",
+  "source": {
+   "url": "https://tryvela.ai/case-studies/firstlook-partners",
+   "tag": "SELF"
+  },
+  "from": "Calendar · Tuesday",
+  "msg": "Anita is free at 2:30 PM.",
+  "ctx": "Her flight lands at 2:00 PM."
+ },
+ {
+  "id": "A14",
+  "group": "Vela's own examples",
+  "title": "A request would put the client and the candidate on one thread",
+  "facts": {
+   "visibility": "client_and_candidate_same_thread"
+  },
+  "expect": {
+   "move": "decline",
+   "includes": [
+    "separate threads"
+   ]
+  },
+  "why": "Some clients require the two sides never to see each other.",
+  "source": {
+   "url": "https://tryvela.ai/case-studies/paragon-legal",
+   "tag": "SELF"
+  },
+  "from": "Client contact · email",
+  "msg": "Please add the candidate to this thread so we can all coordinate.",
+  "ctx": "Clients and candidates never share a thread."
+ },
+ {
+  "id": "B01",
+  "group": "Time zones and calendars",
+  "title": "10:00 AM India time proposed to someone in Kathmandu",
+  "facts": {
+   "proposal": {
+    "at": "2026-10-12T04:30:00Z",
+    "zones": [
+     "Asia/Kolkata",
+     "Asia/Kathmandu"
+    ]
+   }
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "10:00 AM",
+    "10:15 AM"
+   ]
+  },
+  "why": "India is UTC+5:30 and Nepal UTC+5:45, so the same moment reads 15 minutes apart. Always state both.",
+  "source": {
+   "url": "https://en.wikipedia.org/wiki/Time_in_Nepal",
+   "tag": "REF"
+  },
+  "from": "Priya, India · email",
+  "msg": "Let's do 10:00 AM my time on Monday.",
+  "ctx": "Bikash is also on the call, from Kathmandu."
+ },
+ {
+  "id": "B02",
+  "group": "Time zones and calendars",
+  "title": "A weekly New York and Mumbai call that spans the US clock change",
+  "facts": {
+   "series": {
+    "zones": [
+     "America/New_York",
+     "Asia/Kolkata"
+    ],
+    "first": "2026-02-02T14:00:00Z",
+    "weeks": 10
+   }
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "stays fixed"
+   ]
+  },
+  "why": "India has no daylight saving, the US does, so the gap changes mid-series. Someone must choose which side is fixed.",
+  "source": {
+   "url": "https://en.wikipedia.org/wiki/Daylight_saving_time_by_country",
+   "tag": "REF"
+  },
+  "from": "Weekly call · New York and Mumbai",
+  "msg": "9:00 AM New York time, every Monday for 10 weeks from 2 Feb.",
+  "ctx": "The US changes its clocks on 8 March. India never does."
+ },
+ {
+  "id": "B03",
+  "group": "Time zones and calendars",
+  "title": "New York noon on 15 March, with a participant in Paris",
+  "facts": {
+   "proposal": {
+    "at": "2026-03-15T16:00:00Z",
+    "zones": [
+     "America/New_York",
+     "Europe/Paris"
+    ]
+   }
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "12:00 PM",
+    "5:00 PM"
+   ]
+  },
+  "why": "The US changed its clocks on 8 March, Europe does not until 29 March, so Paris is 5 hours ahead, not the usual 6.",
+  "source": {
+   "url": "https://en.wikipedia.org/wiki/Daylight_saving_time_by_country",
+   "tag": "REF"
+  },
+  "from": "Chris, New York · email",
+  "msg": "Noon my time on 15 March works.",
+  "ctx": "Léa is also on the call, from Paris."
+ },
+ {
+  "id": "B04",
+  "group": "Time zones and calendars",
+  "title": "A meeting at 2:30 AM on the day the US clocks spring forward",
+  "facts": {
+   "local_request": {
+    "y": 2026,
+    "m": 3,
+    "d": 8,
+    "h": 2,
+    "min": 30,
+    "tz": "America/New_York"
+   }
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "does not exist",
+    "3:30 AM"
+   ]
+  },
+  "why": "That wall-clock time never happens. The calendar standard says to use the offset from before the gap.",
+  "source": {
+   "url": "https://datatracker.ietf.org/doc/html/rfc5545",
+   "tag": "AUTH"
+  },
+  "from": "Chris, New York · email",
+  "msg": "Let's do 2:30 AM on Sunday 8 March.",
+  "ctx": "That is the night the US clocks spring forward."
+ },
+ {
+  "id": "B05",
+  "group": "Time zones and calendars",
+  "title": "A Los Angeles client asks for 9 PM tonight; the candidate is in India",
+  "facts": {
+   "proposal": {
+    "at": "2026-10-08T04:00:00Z",
+    "zones": [
+     "America/Los_Angeles",
+     "Asia/Kolkata"
+    ]
+   }
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "Wed 7 Oct, 9:00 PM",
+    "Thu 8 Oct, 9:30 AM"
+   ]
+  },
+  "why": "The calendar date differs between the two. Show the date as well as the hour.",
+  "source": {
+   "url": "https://docs.python.org/3/library/zoneinfo.html",
+   "tag": "AUTH"
+  },
+  "from": "Dana, Los Angeles client · email",
+  "msg": "Can we do 9 PM tonight, my time?",
+  "ctx": "The candidate is in India."
+ },
+ {
+  "id": "B06",
+  "group": "Time zones and calendars",
+  "title": "An invitee's time zone cannot be detected",
+  "facts": {
+   "invitee_zone": "unknown"
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "which city"
+   ]
+  },
+  "why": "When detection fails calendars fall back to UTC. Ask rather than guess.",
+  "source": {
+   "url": "https://community.calendly.com/how-do-i-40/time-zone-troubleshooting-guide-242",
+   "tag": "BLOG"
+  },
+  "from": "Aarav · booking form",
+  "msg": "Thursday 3 PM works.",
+  "ctx": "His time zone could not be detected."
+ },
+ {
+  "id": "B07",
+  "group": "Time zones and calendars",
+  "title": "A message says \"3 PM IST\"",
+  "facts": {
+   "zone_label": "IST"
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "more than one zone"
+   ]
+  },
+  "why": "IST can mean India, Ireland or Israel. CST can mean China or US Central.",
+  "source": {
+   "url": "https://en.wikipedia.org/wiki/List_of_time_zone_abbreviations",
+   "tag": "REF"
+  },
+  "from": "Mehul · email",
+  "msg": "How about 3 PM IST?",
+  "ctx": "IST can mean India, Ireland or Israel."
+ },
+ {
+  "id": "C01",
+  "group": "Executive-assistant norms",
+  "title": "A request lands directly after another call",
+  "facts": {
+   "slot": {
+    "start": "2026-10-13T09:00:00Z",
+    "end": "2026-10-13T09:30:00Z"
+   },
+   "busy": [
+    {
+     "start": "2026-10-13T08:30:00Z",
+     "end": "2026-10-13T09:00:00Z"
+    }
+   ],
+   "buffer_min": 30,
+   "tz": "UTC"
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "9:30 AM"
+   ]
+  },
+  "why": "Leave a buffer between calls. The 30 minutes comes from one practitioner source.",
+  "source": {
+   "url": "https://www.prialto.com/blog/buffer-your-schedule",
+   "tag": "BLOG"
+  },
+  "from": "Calendar · Tuesday",
+  "msg": "A request for 9:00 to 9:30.",
+  "ctx": "The previous call ends at 9:00. House rule: 30 minutes between calls."
+ },
+ {
+  "id": "C04",
+  "group": "Executive-assistant norms",
+  "title": "The same time request goes to a peer, not a senior leader",
+  "facts": {
+   "must_offer_times": true,
+   "audience": {
+    "rank": "peer",
+    "name": "Arun"
+   },
+   "free_slots": [
+    "2026-10-13T04:30:00Z",
+    "2026-10-13T08:30:00Z",
+    "2026-10-14T05:30:00Z"
+   ],
+   "tz": "Asia/Kolkata"
+  },
+  "expect": {
+   "move": "counter",
+   "tone": "direct",
+   "options": 2
+  },
+  "why": "Direct with peers, formal upward, and always at least two options.",
+  "source": {
+   "url": "https://www.workclaw.com/blog/negotiation-etiquette-expert-scripts-timing-rules-2025",
+   "tag": "BLOG"
+  },
+  "from": "Arun, a colleague · chat",
+  "msg": "Can you find me a time with the recruiter?",
+  "ctx": "Three slots are free."
+ },
+ {
+  "id": "C05a",
+  "group": "Executive-assistant norms",
+  "title": "No reply after two business days",
+  "facts": {
+   "invitee_silent": true,
+   "followups_sent": 0,
+   "business_days_since": 2
+  },
+  "expect": {
+   "move": "wait"
+  },
+  "why": "Too soon to chase. Practitioner advice is three to five business days.",
+  "source": {
+   "url": "https://www.fyxer.com/blog/follow-up-email-after-no-response",
+   "tag": "BLOG"
+  },
+  "from": "System · no reply from Karan",
+  "msg": "A proposal went out two business days ago.",
+  "ctx": "Nothing has been chased yet."
+ },
+ {
+  "id": "C05b",
+  "group": "Executive-assistant norms",
+  "title": "No reply after four business days",
+  "facts": {
+   "invitee_silent": true,
+   "followups_sent": 0,
+   "business_days_since": 4
+  },
+  "expect": {
+   "move": "follow_up"
+  },
+  "why": "Now it is time for the first polite follow-up.",
+  "source": {
+   "url": "https://www.fyxer.com/blog/follow-up-email-after-no-response",
+   "tag": "BLOG"
+  },
+  "from": "System · no reply from Karan",
+  "msg": "A proposal went out four business days ago.",
+  "ctx": "Nothing has been chased yet."
+ },
+ {
+  "id": "C06",
+  "group": "Executive-assistant norms",
+  "title": "The invitee ignored the proposal and two follow-ups",
+  "facts": {
+   "invitee_silent": true,
+   "followups_sent": 2,
+   "business_days_since": 9
+  },
+  "expect": {
+   "move": "escalate"
+  },
+  "why": "Two follow-ups is a sensible limit. After that a person decides. Routing to a person is this page's inference.",
+  "source": {
+   "url": "https://www.fyxer.com/blog/follow-up-email-after-no-response",
+   "tag": "BLOG"
+  },
+  "from": "System · Karan is silent",
+  "msg": "He ignored the proposal and two follow-ups.",
+  "ctx": "Nine business days have passed."
+ },
+ {
+  "id": "C07a",
+  "group": "Executive-assistant norms",
+  "title": "A routine request to move a regular sync",
+  "facts": {
+   "topic": "routine_sync",
+   "ask": "reschedule"
+  },
+  "expect": {
+   "move": "accept"
+  },
+  "why": "Routine rescheduling is usually safe to handle.",
+  "source": {
+   "url": "https://codesignal.com/learn/courses/representing-the-executive-through-client-communication/lessons/protecting-executive-time",
+   "tag": "BLOG"
+  },
+  "from": "Team · email",
+  "msg": "Can we move Thursday's weekly sync by an hour?",
+  "ctx": "An internal routine meeting."
+ },
+ {
+  "id": "C07b",
+  "group": "Executive-assistant norms",
+  "title": "A request to move a board meeting",
+  "facts": {
+   "topic": "board_meeting",
+   "ask": "reschedule"
+  },
+  "expect": {
+   "move": "escalate"
+  },
+  "why": "Sensitive matters go to a person with a summary and a recommended next step.",
+  "source": {
+   "url": "https://codesignal.com/learn/courses/representing-the-executive-through-client-communication/lessons/protecting-executive-time",
+   "tag": "BLOG"
+  },
+  "from": "Office manager · email",
+  "msg": "Can the board meeting move to Friday?",
+  "ctx": "It involves the whole board."
+ },
+ {
+  "id": "D01",
+  "group": "How AI schedulers fail",
+  "title": "The agent books 4 PM Central, but reading the event back shows 11 AM",
+  "facts": {
+   "booked_at": "2026-10-15T21:00:00Z",
+   "readback_at": "2026-10-15T16:00:00Z",
+   "tz": "America/Chicago"
+  },
+  "expect": {
+   "move": "escalate",
+   "includes": [
+    "read-back",
+    "not reporting success"
+   ]
+  },
+  "why": "A tool silently ignored the time zone in one published account. Never report success without a read-back.",
+  "source": {
+   "url": "https://blog.lhotka.net/2026/03/10/An-Agentic-Tale",
+   "tag": "BLOG"
+  },
+  "from": "Calendar tool",
+  "msg": "Booked: 4 PM Central. Reading it back: 11:00 AM.",
+  "ctx": "The tool may have ignored the time zone."
+ },
+ {
+  "id": "D02",
+  "group": "How AI schedulers fail",
+  "title": "A slot looks free, but a recurring event already sits there",
+  "facts": {
+   "slot": {
+    "start": "2026-10-13T10:00:00Z",
+    "end": "2026-10-13T10:30:00Z"
+   },
+   "busy": [
+    {
+     "start": "2026-10-13T10:00:00Z",
+     "end": "2026-10-13T11:00:00Z",
+     "recurring": true
+    }
+   ],
+   "tz": "UTC"
+  },
+  "expect": {
+   "move": "decline",
+   "includes": [
+    "recurring"
+   ]
+  },
+  "why": "One vendor's incident record: about 6.6 percent of interviews in a window clashed with recurring events.",
+  "source": {
+   "url": "https://status.ashbyhq.com/incidents/g1y2rmzkfg9p",
+   "tag": "AUTH"
+  },
+  "from": "Calendar · Tuesday",
+  "msg": "10:00 to 10:30 looks free.",
+  "ctx": "A weekly recurring event hides in that hour."
+ },
+ {
+  "id": "D03",
+  "group": "How AI schedulers fail",
+  "title": "\"Follow up with Sam\", and two Sams fit",
+  "facts": {
+   "contact_matches": 2
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "which one"
+   ]
+  },
+  "why": "A reply went out on the wrong thread because the instruction was ambiguous.",
+  "source": {
+   "url": "https://www.usecarly.com/blog/how-to-correct-ai-assistant-mistakes/",
+   "tag": "BLOG"
+  },
+  "from": "Anita · chat",
+  "msg": "Follow up with Sam.",
+  "ctx": "Two Sams are on file: Sam Lee and Sam Park."
+ },
+ {
+  "id": "D04",
+  "group": "How AI schedulers fail",
+  "title": "\"Sometime next week\" for a client call",
+  "facts": {
+   "phrase": "sometime next week",
+   "stakes": "high"
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "which date"
+   ]
+  },
+  "why": "One assistant booked next month instead of next week. Read back absolute dates.",
+  "source": {
+   "url": "https://www.usecarly.com/blog/how-to-correct-ai-assistant-mistakes/",
+   "tag": "BLOG"
+  },
+  "from": "Client · email",
+  "msg": "Let's do sometime next week.",
+  "ctx": "A high-stakes client call."
+ },
+ {
+  "id": "D05",
+  "group": "How AI schedulers fail",
+  "title": "A chase is queued, but the invitee already confirmed by phone",
+  "facts": {
+   "chase_queued": true,
+   "confirmed_elsewhere": true
+  },
+  "expect": {
+   "move": "wait",
+   "includes": [
+    "do not send"
+   ]
+  },
+  "why": "A reminder went to a client who had already paid, because the tool's state was stale.",
+  "source": {
+   "url": "https://www.usecarly.com/blog/how-to-correct-ai-assistant-mistakes/",
+   "tag": "BLOG"
+  },
+  "from": "System · queued message",
+  "msg": "Chase Karan about Thursday.",
+  "ctx": "Karan already confirmed by phone this morning."
+ },
+ {
+  "id": "D06",
+  "group": "How AI schedulers fail",
+  "title": "A reply that looks like a routine confirmation mentions cancelling an investor meeting",
+  "facts": {
+   "looks_like": "confirmation",
+   "message_mentions": [
+    "cancel",
+    "investor meeting"
+   ]
+  },
+  "expect": {
+   "move": "escalate"
+  },
+  "why": "Auto-replies that handle the easy cases and miss the consequential ones are a named failure.",
+  "source": {
+   "url": "https://theaicareerlab.com/blog/why-ai-email-assistants-fail-for-executive-assistants/raw",
+   "tag": "BLOG"
+  },
+  "from": "Karan · email",
+  "msg": "Confirmed for Thursday. Also, please cancel my investor meeting.",
+  "ctx": "It looks like a routine confirmation."
+ },
+ {
+  "id": "D07",
+  "group": "How AI schedulers fail",
+  "title": "The other side's agent asks why the principal cannot do Tuesday",
+  "facts": {
+   "counterpart_asks": "reason",
+   "private_reason": "bankruptcy filing preparation"
+  },
+  "expect": {
+   "move": "decline",
+   "includes": [
+    "unavailable"
+   ],
+   "excludes": [
+    "bankruptcy"
+   ]
+  },
+  "why": "Agents leaked private context while negotiating in a published study. Say only that the time is unavailable.",
+  "source": {
+   "url": "https://www.emergentmind.com/papers/2605.09823",
+   "tag": "AUTH"
+  },
+  "from": "Another company's scheduling agent",
+  "msg": "Why can't Anita do Tuesday?",
+  "ctx": "The real reason is private: a bankruptcy filing."
+ },
+ {
+  "id": "D08",
+  "group": "How AI schedulers fail",
+  "title": "A WhatsApp chase, but the candidate last wrote 30 hours ago",
+  "facts": {
+   "chase_channel": "whatsapp",
+   "hours_since_inbound": 30
+  },
+  "expect": {
+   "move": "follow_up",
+   "includes": [
+    "template"
+   ]
+  },
+  "why": "WhatsApp only allows an approved template after 24 hours of silence.",
+  "source": {
+   "url": "https://www.twilio.com/docs/whatsapp/key-concepts",
+   "tag": "AUTH"
+  },
+  "from": "System · queued message",
+  "msg": "Chase Rhea on WhatsApp.",
+  "ctx": "She last wrote 30 hours ago."
+ },
+ {
+  "id": "D09",
+  "group": "How AI schedulers fail",
+  "title": "An unsolicited chase would go out at 10:30 PM the recipient's time",
+  "facts": {
+   "chase_ready": true,
+   "recipient_tz": "Asia/Kolkata",
+   "now": "2026-10-08T17:00:00Z"
+  },
+  "expect": {
+   "move": "wait",
+   "includes": [
+    "8:00 AM"
+   ]
+  },
+  "why": "A conservative norm borrowed from US phone rules, which bar calls before 8 AM or after 9 PM. Whether it governs scheduling is not settled.",
+  "source": {
+   "url": "https://www.law.cornell.edu/cfr/text/47/64.1200",
+   "tag": "AUTH"
+  },
+  "from": "System · queued message",
+  "msg": "Chase Karan now.",
+  "ctx": "It is 10:30 PM where Karan is."
+ },
+ {
+  "id": "E01",
+  "group": "Constraints from published benchmarks",
+  "title": "A request for a Saturday when weekends are off limits",
+  "facts": {
+   "slot": {
+    "start": "2026-10-10T10:00:00Z",
+    "end": "2026-10-10T10:30:00Z"
+   },
+   "busy": [],
+   "rules": {
+    "no_weekends": true
+   },
+   "tz": "UTC"
+  },
+  "expect": {
+   "move": "decline",
+   "includes": [
+    "weekend"
+   ]
+  },
+  "why": "A published calendar benchmark includes no-weekend and out-of-hours rules.",
+  "source": {
+   "url": "https://arxiv.org/abs/2410.22584",
+   "tag": "AUTH"
+  },
+  "from": "Vikram · email",
+  "msg": "Can we meet Saturday at 10?",
+  "ctx": "House rule: no weekend meetings."
+ },
+ {
+  "id": "E02",
+  "group": "Constraints from published benchmarks",
+  "title": "A high-priority meeting, with a later preferred time that is also free",
+  "facts": {
+   "calendars": {
+    "A": [],
+    "B": [
+     [
+      "09:00",
+      "09:30"
+     ]
+    ]
+   },
+   "window": [
+    "09:00",
+    "17:00"
+   ],
+   "duration": 30,
+   "priority": "high",
+   "preferred": "15:00"
+  },
+  "expect": {
+   "move": "accept",
+   "includes": [
+    "9:30 AM",
+    "high priority"
+   ]
+  },
+  "why": "The same benchmark has a rule that high priority takes the first available slot.",
+  "source": {
+   "url": "https://arxiv.org/pdf/2410.22584",
+   "tag": "AUTH"
+  },
+  "from": "Priya · email",
+  "msg": "Urgent. Anytime Monday, though I'd prefer 3 PM.",
+  "ctx": "High priority. The first free time is 9:30 AM; 3 PM is free too."
+ },
+ {
+  "id": "E03",
+  "group": "Constraints from published benchmarks",
+  "title": "No time works for both people under the rules",
+  "facts": {
+   "calendars": {
+    "A": [
+     [
+      "09:00",
+      "13:00"
+     ]
+    ],
+    "B": [
+     [
+      "13:00",
+      "17:00"
+     ]
+    ]
+   },
+   "window": [
+    "09:00",
+    "17:00"
+   ],
+   "duration": 30
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "relaxed"
+   ]
+  },
+  "why": "Saying there is no solution is part of the benchmark. Asking which rule to relax is this page's choice.",
+  "source": {
+   "url": "https://arxiv.org/pdf/2410.22584",
+   "tag": "AUTH"
+  },
+  "from": "Two calendars · Monday",
+  "msg": "A 30 minute call is needed.",
+  "ctx": "Priya is busy 9 to 1. Karan is busy 1 to 5."
+ },
+ {
+  "id": "E04",
+  "group": "Constraints from published benchmarks",
+  "title": "The principal declined Friday afternoons three times before",
+  "facts": {
+   "history": [
+    {
+     "dow": "Fri",
+     "part": "pm",
+     "declined": true
+    },
+    {
+     "dow": "Fri",
+     "part": "pm",
+     "declined": true
+    },
+    {
+     "dow": "Fri",
+     "part": "pm",
+     "declined": true
+    }
+   ],
+   "request": {
+    "dow": "Fri",
+    "part": "pm"
+   },
+   "alternative": "Thursday 11:00 AM"
+  },
+  "expect": {
+   "move": "counter",
+   "includes": [
+    "declined 3 times",
+    "Thursday 11:00 AM"
+   ]
+  },
+  "why": "A published preprint finds current models do not learn this kind of evolving preference.",
+  "source": {
+   "url": "https://arxiv.org/html/2601.11957v1",
+   "tag": "AUTH"
+  },
+  "from": "Priya · email",
+  "msg": "Can we do Friday afternoon?",
+  "ctx": "She has turned down Friday afternoons three times before."
+ },
+ {
+  "id": "E05",
+  "group": "Constraints from published benchmarks",
+  "title": "Two people, 9 to 5 Monday, half an hour needed; one is busy early and mid-morning",
+  "facts": {
+   "calendars": {
+    "A": [],
+    "B": [
+     [
+      "09:00",
+      "09:30"
+     ],
+     [
+      "10:30",
+      "12:00"
+     ],
+     [
+      "13:00",
+      "14:00"
+     ],
+     [
+      "15:30",
+      "16:30"
+     ]
+    ]
+   },
+   "window": [
+    "09:00",
+    "17:00"
+   ],
+   "duration": 30
+  },
+  "expect": {
+   "move": "accept",
+   "includes": [
+    "9:30 AM"
+   ]
+  },
+  "why": "The plain slot-finding task from the NATURAL PLAN paper. Even this is a real test for models.",
+  "source": {
+   "url": "https://arxiv.org/abs/2406.04520",
+   "tag": "AUTH"
+  },
+  "from": "Two calendars · Monday, 9 to 5",
+  "msg": "Find 30 minutes for both.",
+  "ctx": "Karan is busy 9 to 9:30, 10:30 to 12, 1 to 2 and 3:30 to 4:30."
+ },
+ {
+  "id": "B09",
+  "group": "Time zones and calendars",
+  "known_gap": true,
+  "title": "\"This Friday\", but the other person's weekend is different",
+  "facts": {
+   "topic": "weekend_mismatch"
+  },
+  "expect": {
+   "move": "ask",
+   "includes": [
+    "weekend"
+   ]
+  },
+  "why": "Weekends differ by country, so Friday may be her day off. Ask, or offer Sunday to Thursday times.",
+  "source": {
+   "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Locale/getWeekInfo",
+   "tag": "AUTH"
+  },
+  "from": "Noa, Tel Aviv · email",
+  "msg": "Let's meet this Friday.",
+  "ctx": "She works Sunday to Thursday. Your recruiter works Monday to Friday."
+ },
+ {
+  "id": "B10",
+  "group": "Time zones and calendars",
+  "known_gap": true,
+  "title": "A date that falls around a moon-based holiday",
+  "facts": {
+   "topic": "lunar_holiday"
+  },
+  "expect": {
+   "move": "wait",
+   "includes": [
+    "re-confirm"
+   ]
+  },
+  "why": "Holiday dates on moon-based calendars shift each year. Hold it provisionally and re-confirm nearer the date.",
+  "source": {
+   "url": "https://en.wikipedia.org/wiki/Islamic_calendar",
+   "tag": "REF"
+  },
+  "from": "Imran · email",
+  "msg": "Could we do the 20th?",
+  "ctx": "That is close to Eid, whose exact date depends on moon sighting."
+ },
+ {
+  "id": "C02",
+  "group": "Executive-assistant norms",
+  "known_gap": true,
+  "title": "Someone wants an agreed meeting moved to suit them",
+  "facts": {
+   "topic": "convenience_move"
+  },
+  "expect": {
+   "move": "decline",
+   "includes": [
+    "reason"
+   ]
+  },
+  "why": "The default is no, with a reason, not a yes that rearranges everyone's calendar.",
+  "source": {
+   "url": "https://theaicareerlab.com/blog/ea-calendar-defense-playbook/raw",
+   "tag": "BLOG"
+  },
+  "from": "Arun, a colleague · chat",
+  "msg": "A better time opened up for me. Can we shift Wednesday's client call?",
+  "ctx": "The client already confirmed Wednesday."
+ },
+ {
+  "id": "C03",
+  "group": "Executive-assistant norms",
+  "known_gap": true,
+  "title": "You have to counter, so how many options?",
+  "facts": {
+   "topic": "must_counter"
+  },
+  "expect": {
+   "move": "counter",
+   "options": 2
+  },
+  "why": "When you decline or counter, offer at least two alternatives, one of them soon.",
+  "source": {
+   "url": "https://www.workclaw.com/blog/negotiation-etiquette-expert-scripts-timing-rules-2025",
+   "tag": "BLOG"
+  },
+  "from": "Vikram · email",
+  "msg": "Can we do Tuesday at 4 PM?",
+  "ctx": "It clashes with another meeting, so you must counter."
+ }
+]

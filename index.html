@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>Scheduling judgment, tested</title>
+<meta name="description" content="Play the scheduling assistant. 45 real situations, scored against a careless and a careful assistant, with 24 rules you can switch off. Not an AI agent: a way to test one.">
+<style>
+@font-face{font-family:"Helvetica Neue";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/HelveticaNeue-Roman.woff2) format("woff2")}
+@font-face{font-family:"Helvetica Neue";font-weight:500 600;font-style:normal;font-display:swap;src:url(fonts/HelveticaNeue-Medium.woff2) format("woff2")}
+/* Apple system, measured on apple.com (APPLE-STUDY-2026-10-06): ink #1d1d1f, grey #6e6e73, link #0066cc, grounds white and #f5f5f7,
+   ONE card radius (28), two weights (400 and 600), type scale 40/28/21/17/14/12. Right and wrong use the Apple system green and red. */
+:root{--ink:#1d1d1f;--grey:#6e6e73;--grey2:#86868b;--link:#0066cc;--ground:#f5f5f7;--card:#fff;--green:#34c759;--green-ink:#008932;--red:#ff3b30;--red-ink:#d70015;--rule:#d2d2d7;--r:28px;--ease:cubic-bezier(.4,0,.6,1)}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:400;font-size:17px;line-height:25px;letter-spacing:-0.022em;-webkit-font-smoothing:antialiased;overflow:hidden}
+button{font:inherit;letter-spacing:inherit;color:inherit}
+a{color:var(--link);text-decoration:none}a:hover{text-decoration:underline}
+.app{height:100dvh;display:grid;grid-template-rows:48px 1fr;max-width:1440px;margin:0 auto}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:0 clamp(20px,3vw,44px);background:rgba(245,245,247,.8);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid rgba(0,0,0,.08)}
+.nav .t{font-size:14px;line-height:20px;font-weight:600;letter-spacing:-0.01em}
+.nav .r{display:flex;gap:24px;align-items:center;font-size:14px;line-height:20px;letter-spacing:-0.01em}
+.nav .who{color:var(--grey)}
+.link{background:none;border:0;padding:0;color:var(--link);cursor:pointer;font-size:14px;line-height:20px;letter-spacing:-0.01em}
+.link:hover{text-decoration:underline}
+main{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px clamp(20px,3vw,44px) 28px;min-height:0}
+.panel{display:flex;flex-direction:column;min-height:0;gap:16px}
+.cap{display:flex;justify-content:space-between;font-size:14px;line-height:20px;letter-spacing:-0.01em;color:var(--grey);margin:0 4px}
+.card{background:var(--card);border-radius:var(--r)}
+/* play */
+.msg{padding:28px 36px 30px}
+.msg .from{font-size:14px;line-height:20px;letter-spacing:-0.01em;color:var(--grey)}
+.msg .text{font-size:clamp(28px,3vw,40px);line-height:1.1;letter-spacing:-0.012em;font-weight:600;margin:10px 0 16px;text-wrap:balance}
+.msg .ctx{color:var(--grey)}
+.msg .ctx b{font-weight:600;color:var(--ink)}
+.msg .ask{margin-top:12px;font-weight:600}
+.moves{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mv{border:0;border-radius:980px;background:var(--card);padding:12px 16px;min-height:52px;text-align:center;cursor:pointer;font-size:17px;line-height:20px;transition:background .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}
+.mv:hover:not(:disabled){background:#e8e8ed}
+.mv:disabled{cursor:default}
+.mv.right{background:var(--green-ink);color:#fff}
+.mv.wrong{background:var(--red-ink);color:#fff}
+.mv.answer{box-shadow:inset 0 0 0 2px var(--green-ink)}
+.fb{flex:1;min-height:0;padding:28px 36px;display:flex;flex-direction:column;gap:10px}
+.fb .head{font-size:28px;line-height:32px;font-weight:600;letter-spacing:-0.005em}
+.fb .head.ok{color:var(--green-ink)}.fb .head.no{color:var(--red-ink)}
+.fb .why{font-size:17px}
+.fb .two{font-size:14px;line-height:20px;letter-spacing:-0.01em;color:var(--grey)}
+.fb .two b{font-weight:600;color:var(--ink)}
+.fb .two .ok{color:var(--green-ink);font-weight:600}.fb .two .no{color:var(--red-ink);font-weight:600}
+.fb .src{font-size:14px;line-height:20px;letter-spacing:-0.01em;color:var(--grey)}
+.fb .next{margin-top:auto;align-self:flex-start;border:0;background:var(--link);color:#fff;border-radius:980px;padding:12px 24px;cursor:pointer;font-size:17px;line-height:20px;transition:background .3s var(--ease)}
+.fb .next:hover{background:#0077ed}
+.how .hh{font-size:21px;line-height:29px;font-weight:600;letter-spacing:0;margin-bottom:6px}
+.how ol{margin:0;padding-left:1.25em;color:var(--grey)}.how li{margin:6px 0}
+/* dashboard */
+.dash{padding:28px 32px;display:flex;flex-direction:column;min-height:0}
+.rowS{margin-bottom:18px}
+.rowS .lab{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:10px}
+.rowS .nm{font-weight:600}
+.rowS .nm small{display:block;font-weight:400;font-size:14px;line-height:20px;letter-spacing:-0.01em;color:var(--grey)}
+.rowS .num{font-size:40px;line-height:40px;font-weight:600;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.rowS .num small{font-size:17px;font-weight:400;color:var(--grey);letter-spacing:-0.022em}
+.rowS.bad .num{color:var(--red-ink)}
+.strip{display:grid;grid-template-columns:repeat(45,1fr);gap:3px}
+.sq{aspect-ratio:1;border-radius:3px;background:#e8e8ed;border:0;padding:0;cursor:pointer;min-width:0}
+.sq.r{background:var(--green)}.sq.w{background:repeating-linear-gradient(135deg,var(--red) 0 2px,#fff 2px 4px)}
+.sq.cur{outline:2px solid var(--ink);outline-offset:1px}
+.sq.flip{animation:flip .6s var(--ease)}
+@keyframes flip{0%{transform:scale(2)}100%{transform:scale(1)}}
+.rules{margin-top:auto;min-height:0}
+.rules .hd{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.rules .hd b{font-weight:600}
+.sws{display:grid;grid-template-columns:repeat(3,1fr);gap:6px 8px}
+.sw{display:flex;align-items:center;justify-content:space-between;gap:6px;border:0;background:var(--ground);border-radius:12px;padding:5px 9px 5px 12px;white-space:nowrap;cursor:pointer;font-size:13px;line-height:16px;letter-spacing:-0.01em;text-align:left;min-height:34px}
+.sw .knob{flex:none;width:32px;height:20px;border-radius:10px;background:var(--green);position:relative;transition:background .3s var(--ease)}
+.sw .knob::after{content:"";position:absolute;top:2px;left:14px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .3s var(--ease)}
+.sw[aria-checked="false"] .knob{background:#d1d1d6}.sw[aria-checked="false"] .knob::after{left:2px}
+.sw[aria-checked="false"] .lbl{color:var(--grey2);text-decoration:line-through}
+.note{margin-top:12px;font-size:14px;line-height:20px;letter-spacing:-0.01em;color:var(--grey);min-height:20px}
+.note.bad{color:var(--red-ink)}
+:focus-visible{outline:2px solid #0071e3;outline-offset:2px}
+/* sheet */
+dialog{border:0;border-radius:var(--r);padding:0;width:min(680px,92vw);max-height:84dvh;box-shadow:0 30px 80px rgba(0,0,0,.25)}
+dialog::backdrop{background:rgba(0,0,0,.32);backdrop-filter:blur(8px)}
+dialog .in{padding:36px 40px;overflow:auto;max-height:84dvh}
+dialog h2{margin:0 0 12px;font-size:28px;line-height:32px;font-weight:600;letter-spacing:-0.005em}
+dialog ul{margin:0 0 28px;padding-left:1.2em}dialog li{margin:8px 0;color:var(--grey)}
+dialog code{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:var(--ground);padding:1px 7px;border-radius:6px;color:var(--ink)}
+.qs div{display:grid;grid-template-columns:3em 1fr auto;gap:12px;padding:10px 0;border-top:1px solid var(--rule);font-size:14px;line-height:20px;letter-spacing:-0.01em}
+.qs span:first-child{color:var(--grey2)}
+.tag{font-size:12px;line-height:16px;color:var(--grey);margin-right:6px}
+.tabs{display:none}
+@media (max-width:980px){
+  .app{grid-template-rows:48px 1fr auto}
+  main{display:block;padding:16px 16px 12px}
+  .panel{display:none;height:100%}.panel.active{display:flex}
+  .moves{grid-template-columns:repeat(2,1fr)}
+  .msg,.fb,.dash{padding:22px 24px}
+  .nav .who{display:none}
+  .tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 16px max(10px,env(safe-area-inset-bottom));background:rgba(245,245,247,.9);border-top:1px solid rgba(0,0,0,.08)}
+  .tabs button{border:0;background:transparent;padding:10px;border-radius:980px;font-size:15px;line-height:20px;color:var(--grey);cursor:pointer}
+  .tabs button[aria-selected="true"]{background:#fff;color:var(--ink);font-weight:600}
+  .sws{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-height:780px) and (min-width:981px){.msg{padding:20px 32px 22px}.msg .text{margin:6px 0 10px}.fb{padding:20px 32px}.dash{padding:24px 32px}.rowS{margin-bottom:14px}.sw{min-height:30px;padding:4px 10px 4px 12px}.moves .mv{min-height:46px;padding:9px 14px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="nav">
+    <span class="t">Scheduling judgment, tested</span>
+    <span class="r"><span class="who">Rajarajan Panneerselvam</span><button class="link" id="aboutBtn" type="button">About, and all questions</button></span>
+  </div>
+
+  <main>
+    <section class="panel active" id="pPlay" aria-label="Play">
+      <div class="cap"><span>You are the scheduling assistant</span><span id="progress">Question 1 of <span data-n>45</span></span></div>
+      <div class="msg card">
+        <div class="from" id="from"></div>
+        <div class="text" id="text"></div>
+        <div class="ctx" id="ctx"></div>
+        <div class="ask">What do you do?</div>
+      </div>
+      <div class="moves" id="moves" role="group" aria-label="Your move"></div>
+      <div class="fb card" id="fb" aria-live="polite"></div>
+    </section>
+
+    <section class="panel" id="pDash" aria-label="Dashboard"><div class="dash card">
+      <div class="rowS" id="rYou"><div class="lab"><span class="nm">You<small>your answers so far</small></span><span class="num"><span id="nYou">–</span></span></div><div class="strip" id="sYou"></div></div>
+      <div class="rowS bad" id="rCareless"><div class="lab"><span class="nm">Careless assistant<small>says yes to everything</small></span><span class="num"><span id="nCareless">0</span><small> / <span data-n>45</span></small></span></div><div class="strip" id="sCareless"></div></div>
+      <div class="rowS" id="rCareful"><div class="lab"><span class="nm">Careful assistant<small><span id="onCount">24</span> written rules, <span id="gapCount">4</span> known gaps</small></span><span class="num"><span id="nCareful">0</span><small> / <span data-n>45</span></small></span></div><div class="strip" id="sCareful"></div></div>
+      <div class="rules">
+        <div class="hd"><b>Switch a rule off. Watch it break.</b><button class="link" id="resetBtn" type="button">All on</button></div>
+        <div class="sws" id="chips"></div>
+        <div class="note" id="note" aria-live="polite"></div>
+      </div>
+    </div></section>
+  </main>
+
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button role="tab" aria-selected="true" data-p="pPlay" type="button">Play</button>
+    <button role="tab" aria-selected="false" data-p="pDash" type="button">Scores and rules</button>
+  </nav>
+</div>
+
+<dialog id="about"><div class="in">
+  <h2>About this</h2>
+  <ul>
+    <li>Not an AI agent. The careful assistant is hand-written rules, and it is wrong on a few questions on purpose: the known gaps. A test that your own assistant fully passes has not tested much. Swap in a real agent and the same <span data-n>45</span> questions score it.</li>
+    <li>Senders and messages are invented to fit each source's rule. The right answers are my reading of the source, linked after every answer.</li>
+    <li>Some numbers are my assumptions: a 9 to 6 working day, a 3 day wait before a chase, a 90 minute travel buffer.</li>
+    <li>No published test covers tone or when to escalate, so those questions lean on practitioner sources.</li>
+    <li>Run it yourself: <code>node check.mjs</code> runs every question and switches each rule off to prove a question catches it.</li>
+  </ul>
+  <h2>All <span data-n>45</span> questions</h2>
+  <div class="qs" id="qs"></div>
+  <p style="margin:18px 0 0"><button class="link" id="closeAbout" type="button">Close</button></p>
+</div></dialog>
+
+<script type="module">
+import { RULES, MOVES, decide, naive, judge } from "./policy.js";
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const [cases, order] = await Promise.all([fetch("cases.json").then((r) => r.json()), fetch("order.json").then((r) => r.json())]);
+const byId = Object.fromEntries(cases.map((c) => [c.id, c]));
+const seq = order.map((id) => byId[id]), N = seq.length;
+const on = new Set(RULES.map((r) => r.id));
+const MOVE_KEYS = ["accept", "counter", "ask", "escalate", "decline", "wait", "follow_up"];
+const TAGS = { SELF: "Vela, self-described", AUTH: "standard, docs or paper", REF: "Wikipedia", BLOG: "practitioner or vendor blog" };
+const you = {};
+const GAPS = cases.filter((c) => c.known_gap).length;
+const BASE = seq.filter((c) => judge(c.expect, decide(c.facts)).pass).length;   // the careful score with every rule on
+document.querySelectorAll('[data-n]').forEach((e) => (e.textContent = N));
+document.getElementById('gapCount').textContent = GAPS;
+document.querySelectorAll('.strip').forEach((e) => (e.style.gridTemplateColumns = `repeat(${N},1fr)`));      // case id -> move chosen
+let i = 0;           // current question index in seq
+
+const $ = (id) => document.getElementById(id);
+const carelessPass = seq.map((c) => judge(c.expect, naive()).pass);
+const carefulPass = () => seq.map((c) => judge(c.expect, decide(c.facts, on)).pass);
+const youPass = () => seq.map((c) => (c.id in you ? you[c.id] === c.expect.move : null));
+
+// ---- play panel ----
+$("moves").innerHTML = MOVE_KEYS.map((m, k) => `<button class="mv" data-m="${m}" type="button" title="Key ${k + 1}">${esc(MOVES[m])}</button>`).join("");
+function renderQuestion() {
+  const c = seq[i], got = you[c.id];
+  $("progress").textContent = `Question ${i + 1} of ${N}`;
+  $("from").textContent = c.from;
+  $("text").textContent = c.msg;
+  $("ctx").innerHTML = `<b>Context.</b> ${esc(c.ctx)}`;
+  document.querySelectorAll(".mv").forEach((b) => {
+    b.disabled = got !== undefined;
+    b.className = "mv" + (got !== undefined && b.dataset.m === c.expect.move ? " answer" : "") + (got === b.dataset.m ? (got === c.expect.move ? " right" : " wrong") : "");
+  });
+  const fb = $("fb");
+  if (got === undefined) { fb.innerHTML = `<div class="how"><div class="hh">How this works</div><ol><li>A message arrives. You are the scheduling assistant.</li><li>Pick your move. Keys 1 to 7 work too.</li><li>See the right move, the reason, and how a careless and a careful assistant did.</li><li>On the right, switch rules off and watch the careful one break.</li></ol></div>`; return; }
+  const ok = got === c.expect.move, careful = decide(c.facts, on), cj = judge(c.expect, careful), nj = judge(c.expect, naive());
+  const verdict = (p) => `<span class="${p ? "ok" : "no"}">${p ? "right" : "wrong"}</span>`;
+  fb.innerHTML = `<div class="head ${ok ? "ok" : "no"}">${ok ? "Right." : `Not quite. The right move: ${esc(MOVES[c.expect.move])}.`}</div>
+    <div class="why">${esc(c.why)}</div>
+    <div class="two"><b>Careless</b> said ${esc(MOVES.accept)} ${verdict(nj.pass)} &nbsp;·&nbsp; <b>Careful</b> said ${esc(MOVES[careful.move])} ${verdict(cj.pass)}</div>
+    ${c.known_gap ? `<div class="two"><b>Known gap.</b> No rule handles this yet, so the careful assistant gets it wrong. Adding a rule would fix it.</div>` : ""}
+    <div class="src">Source: <a href="${esc(c.source.url)}" rel="noopener" target="_blank">${esc(TAGS[c.source.tag] || c.source.tag)}</a></div>
+    <button class="next" id="nextBtn" type="button">${i + 1 < N ? "Next question" : "See where you landed"}</button>`;
+  $("nextBtn").focus({ preventScroll: true });
+  $("nextBtn").onclick = next;
+}
+function choose(m) { const c = seq[i]; if (c.id in you) return; you[c.id] = m; renderQuestion(); renderDash(); }
+function next() { i = Math.min(N - 1, i + 1); renderQuestion(); renderDash(); if (matchMedia("(max-width:920px)").matches && Object.keys(you).length === N) show("pDash"); }
+$("moves").addEventListener("click", (e) => { const b = e.target.closest(".mv"); if (b && !b.disabled) choose(b.dataset.m); });
+addEventListener("keydown", (e) => {
+  if ($("about").open || e.metaKey || e.ctrlKey || e.altKey) return;
+  const k = MOVE_KEYS[+e.key - 1];
+  if (k) choose(k);
+  else if (e.key === "Enter" && seq[i].id in you && document.activeElement?.id !== "nextBtn") next();
+  else if (e.key === "ArrowRight") { i = Math.min(N - 1, i + 1); renderQuestion(); renderDash(); }
+  else if (e.key === "ArrowLeft") { i = Math.max(0, i - 1); renderQuestion(); renderDash(); }
+});
+
+// ---- dashboard ----
+for (const id of ["sYou", "sCareless", "sCareful"]) $(id).innerHTML = seq.map((c, k) => `<button class="sq" data-k="${k}" title="${esc(c.id + ": " + c.title)}" aria-label="${esc(c.title)}" type="button"></button>`).join("");
+document.querySelector(".app").addEventListener("click", (e) => { const q = e.target.closest(".sq"); if (q) { i = +q.dataset.k; renderQuestion(); renderDash(); show("pPlay"); } });
+function paint(id, arr, flipped) {
+  $(id).querySelectorAll(".sq").forEach((s, k) => {
+    s.className = "sq" + (arr[k] === true ? " r" : arr[k] === false ? " w" : "") + (k === i ? " cur" : "") + (flipped && flipped.has(k) ? " flip" : "");
+  });
+}
+function renderDash(flipped) {
+  const yp = youPass(), cp = carefulPass(), answered = yp.filter((x) => x !== null).length;
+  $("nYou").innerHTML = answered ? `${yp.filter(Boolean).length}<small> / ${answered}</small>` : "–";
+  $("nCareless").textContent = carelessPass.filter(Boolean).length;
+  $("nCareful").textContent = cp.filter(Boolean).length;
+  $("onCount").textContent = on.size;
+  paint("sYou", yp); paint("sCareless", carelessPass); paint("sCareful", cp, flipped);
+  $("rCareful").classList.toggle("bad", cp.filter(Boolean).length < BASE);
+}
+$("chips").innerHTML = RULES.map((r) => `<button class="sw" type="button" role="switch" aria-checked="true" data-id="${r.id}" title="${esc(r.title)}"><span class="lbl">${esc(r.short)}</span><span class="knob"></span></button>`).join("");
+function toggle(id) {
+  const before = carefulPass();
+  on.has(id) ? on.delete(id) : on.add(id);
+  const after = carefulPass(), flipped = new Set();
+  after.forEach((v, k) => { if (v !== before[k]) flipped.add(k); });
+  $("chips").querySelector(`[data-id="${id}"]`).setAttribute("aria-checked", on.has(id));
+  renderDash(flipped); renderQuestion();
+  const rule = RULES.find((r) => r.id === id), broke = [...flipped].filter((k) => !after[k]).map((k) => seq[k].id);
+  $("note").className = "note" + (broke.length ? " bad" : "");
+  $("note").textContent = on.has(id) ? "Back on." : broke.length ? `Without "${rule.short}", the careful assistant now gets ${broke.length} wrong: ${broke.join(", ")}.` : `Without "${rule.short}" nothing changes on these questions.`;
+}
+$("chips").addEventListener("click", (e) => { const b = e.target.closest(".sw"); if (b) toggle(b.dataset.id); });
+$("resetBtn").onclick = () => { RULES.forEach((r) => on.add(r.id)); $("chips").querySelectorAll(".sw").forEach((b) => b.setAttribute("aria-checked", "true")); $("note").textContent = ""; $("note").className = "note"; renderDash(); renderQuestion(); };
+
+// ---- tabs (narrow screens) and about ----
+function show(p) { document.querySelectorAll(".panel").forEach((x) => x.classList.toggle("active", x.id === p)); document.querySelectorAll(".tabs button").forEach((b) => b.setAttribute("aria-selected", b.dataset.p === p)); }
+document.querySelector(".tabs").addEventListener("click", (e) => { const b = e.target.closest("button"); if (b) show(b.dataset.p); });
+$("qs").innerHTML = cases.map((c) => `<div><span>${c.id}</span><span>${esc(c.title)}</span><span><span class="tag">${esc(c.source.tag)}</span> <a href="${esc(c.source.url)}" rel="noopener" target="_blank">source</a></span></div>`).join("");
+$("aboutBtn").onclick = () => $("about").showModal();
+$("closeAbout").onclick = () => $("about").close();
+$("about").addEventListener("click", (e) => { if (e.target === $("about")) $("about").close(); });
+
+renderQuestion(); renderDash();
+</script>
+</body>
+</html>
