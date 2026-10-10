@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#f5f5f7">
 <title>Scheduling judgment, tested</title>
-<meta name="description" content="Play the scheduling assistant. 45 real situations, scored against a careless and a careful assistant, with 24 rules you can switch off. Not an AI agent: a way to test one.">
+<meta name="description" content="Play the scheduling assistant. 45 situations, scored against a careless and a careful assistant, with 24 rules you can switch off. Not an AI agent: a way to test one.">
 <style>
 @font-face{font-family:"Helvetica Neue";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/HelveticaNeue-Roman.woff2) format("woff2")}
 @font-face{font-family:"Helvetica Neue";font-weight:500 600;font-style:normal;font-display:swap;src:url(fonts/HelveticaNeue-Medium.woff2) format("woff2")}
@@ -152,7 +152,7 @@ dialog code{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:v
     <li>Not an AI agent. The careful assistant is hand-written rules, and it is wrong on a few questions on purpose: the known gaps. A test that your own assistant fully passes has not tested much. Swap in a real agent and the same <span data-n>45</span> questions score it.</li>
     <li>Senders and messages are invented to fit each source's rule. The right answers are my reading of the source, linked after every answer.</li>
     <li>Some numbers are my assumptions: a 9 to 6 working day, a 3 day wait before a chase, a 90 minute travel buffer.</li>
-    <li>No published test covers tone or when to escalate, so those questions lean on practitioner sources.</li>
+    <li>I found no published test that covers tone or when to escalate, so those questions lean on practitioner sources. 13 of the 45 questions come from Vela's own public pages; the rest come from other published sources, each linked after you answer.</li>
     <li>Run it yourself: <code>node check.mjs</code> runs every question and switches each rule off to prove a question catches it.</li>
   </ul>
   <h2>All <span data-n>45</span> questions</h2>
